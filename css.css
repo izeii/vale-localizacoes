@@ -13,28 +13,37 @@ body {
 /* Header */
 .header {
     position: fixed;
-    top: 0; left: 0; width: 100%;
-    padding: 1rem 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: .9rem 0;
     background: #fff;
     display: flex;
-    justify-content: center; /* Centraliza a logo */
+    justify-content: center;
+    /* Centraliza a logo */
     align-items: center;
     z-index: 100;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 /* Seção Localizações */
 .locs {
-    margin-top: 120px; /* Espaço para não ficar atrás do header */
-    padding: 2rem 10%;
+    margin-top: 100px;
+    /* Espaço para não ficar atrás do header */
+    padding: 3rem 10%;
     text-align: center;
 }
 
 .Localizacoes {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    color: #007E7A ;
+}
+
+.LocalizacoesGeral {
     font-size: 2.5rem;
-    margin-bottom: 3rem;
-    color: #007c32;
+    margin-bottom: 4rem;
+    color: #EDB110;
 }
 
 .espaco .linha {
@@ -44,21 +53,140 @@ body {
     flex-wrap: wrap;
 }
 
+
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
 /* Cards (Barras) */
 .barra {
     background: #fff;
-    width: 280px;
+    width: 260px;
+    height: 260px;
     padding: 2rem;
     border-radius: 1.5rem;
-    border-bottom: 5px solid #007c32; /* Detalhe em verde */
-    transition: 0.4s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border-bottom: 5px solid #007E7A;
+    /* Detalhe em verde */
+    /*transition: 0.4s ease;*/
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+
+    /* deixa óbvio que dá pra clicar */
+    cursor: pointer;
+    position: relative;
+
+    /* variável que controla o "sobe/desce" do card */
+    --ty: 18px;
+
+    /* estado inicial do reveal */
+    opacity: 0;
+    transform: translateY(var(--ty));
+    --delay: 0ms;
+    transition:
+        opacity 600ms ease var(--delay),
+        transform 600ms ease var(--delay),
+        box-shadow 400ms ease 0ms,
+        border-bottom-color 400ms ease 0ms;
+    will-change: opacity, transform;
+
+
+}
+
+
+/* === Indicação visual de clicável (no card inteiro) === */
+.barra::before {
+
+   content: "📍";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    /* interior branco (mesmo do card) */
+    background: #fff;
+    /* borda azul igual a borda do card */
+    border: 2px solid #007E7A;
+    /* cor do ícone (fica azul também) */
+    color: #007E7A;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    /* sombra pode manter */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+    /* animação suave quando mudar a borda/cor */
+    transition: border-color 400ms ease, color 400ms ease;
+
+}
+
+.barra:hover::before {
+    border-color: #EDB110; /* mesmo amarelo da borda do card */
+    color: #EDB110;        /* opcional: ícone acompanha o amarelo */
+}
+
+.barra::after {
+    content: "Abrir no Maps";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    bottom: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #007E7A;
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+    white-space: nowrap;
+}
+
+.barra:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* quando ficar visível */
+.barra.reveal {
+    opacity: 1;
+    --ty: 0px;
+    --delay: 0ms;
 }
 
 .barra:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 20px #007c3244;
-    border-bottom-color: #ffb81c;
+    --ty: -10px;
+    box-shadow: 0 10px 20px #555555;
+    border-bottom-color: #EDB110;
+}
+
+/* imagem pode continuar com zoom suave */
+.barra img {
+    transition: transform 0.3s ease;
+}
+
+
+.titulo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.subtitulo {
+    /* font-size: 1rem;
+    font-weight: 500;*/
+    color: #919191;
+    font-weight: 600;
+    margin-top: 4px;
+    text-align: center;
+    /*color: #333;*/
+    font-size: 1.05rem;
+}
+
+
+.info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
 }
 
 .info a {
@@ -72,9 +200,6 @@ body {
     gap: 15px;
 }
 
-.info img {
-    transition: 0.3s;
-}
 
 .barra:hover img {
     transform: scale(1.1);
@@ -83,14 +208,16 @@ body {
 .dica-container {
     text-align: center;
     padding: 3rem 10%;
-    background-color: #ffffff; /* Fundo branco para destacar do body cinza */
+    background-color: #ffffff;
+    /* Fundo branco para destacar do body cinza */
     margin: 2rem 10%;
     border-radius: 1rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .dica-container h1 {
-    color: #007c32; /* Verde Vale */
+    color: #EDB110;
+    /* Verde Vale */
     font-size: 1.8rem;
     margin-bottom: 1rem;
 }
@@ -102,12 +229,13 @@ body {
 }
 
 .dica-container p strong {
-    color: #007c32;
+    color: #007E7A;
 }
 
 .dica-container img {
     width: 300px;
-    max-width: 90%; /* Responsivo */
+    max-width: 90%;
+    /* Responsivo */
     height: auto;
     border-radius: 10px;
     border: 2px solid #eeeeee;
@@ -118,3 +246,17 @@ body {
 .dica-container img:hover {
     transform: scale(1.02);
 }
+
+.bauxita {
+    margin-bottom: 90px;
+}
+
+
+/* Stagger por linha (continua igual) - descontinuado
+.espaco .linha .barra:nth-child(1) { --delay: 0ms; }
+.espaco .linha .barra:nth-child(2) { --delay: 80ms; }
+.espaco .linha .barra:nth-child(3) { --delay: 160ms; }
+.espaco .linha .barra:nth-child(4) { --delay: 240ms; }
+.espaco .linha .barra:nth-child(5) { --delay: 320ms; }
+.espaco .linha .barra:nth-child(6) { --delay: 400ms; }
+*/
